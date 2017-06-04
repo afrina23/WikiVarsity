@@ -12,7 +12,7 @@ import android.widget.Toast;
  */
 public class DatabaseHelper extends SQLiteOpenHelper {
 
-    public static final String DataBaseName="wiki.db";
+    public static final String DataBaseName="WikiVarsity.db";
     public static final String professorTable="professor_table";
     public static final String favouriteTable="favourite_table";
     public static final String C_1="NAME";
@@ -21,7 +21,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String C_4="RESEARCH_AREA";
     public static final String C_5="MINIMUM_CGPA";
     public static final String C_6="WEBSITE";
-
+    public static final String C_7="PHOTO";
     public DatabaseHelper(Context context) {
         super(context, DataBaseName, null, 1);
 
@@ -32,7 +32,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
             sqLiteDatabase.execSQL("create table "+professorTable+
-                    "(NAME TEXT PRIMARY KEY , VARSITY TEXT ,DEPT TEXT,RESEARCH_AREA TEXT,MINIMUM_CGPA TEXT,WEBSITE TEXT);");
+                    "(NAME TEXT PRIMARY KEY , VARSITY TEXT ,DEPT TEXT,RESEARCH_AREA TEXT,MINIMUM_CGPA TEXT,WEBSITE TEXT,PHOTO INTEGER);");
             sqLiteDatabase.execSQL("create table "+favouriteTable+"(ID INT ,PROFESSOR_NAME TEXT);");
         System.out.println("************************table created:"+professorTable+"***************************************");
 
@@ -52,7 +52,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return true;
     }
 
-    public  boolean insertProfessor(String name,String university, String dept, String researchArea,String minimumCGPA ,String website){
+    public  boolean insertProfessor(String name,String university, String dept, String researchArea,
+                                    String minimumCGPA ,String website,long photo){
         SQLiteDatabase sqLiteDatabase= this.getWritableDatabase();
         ContentValues contentValues= new ContentValues();
         contentValues.put(C_1,name);
@@ -61,6 +62,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put(C_4,researchArea);
         contentValues.put(C_5,minimumCGPA);
         contentValues.put(C_6,website);
+        contentValues.put(C_7,photo);
         // contentValues.put(C_4,mark);
         long result=sqLiteDatabase.insert(professorTable,null,contentValues);
         if(result==-1){

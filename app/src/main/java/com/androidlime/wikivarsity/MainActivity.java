@@ -79,10 +79,11 @@ public class MainActivity extends AppCompatActivity {
             professor.ResearchArea=all.getString(3);
             professor.MinimumCGPA=all.getString(4);
             professor.Website=all.getString(5);
+            professor.photo=all.getInt(6);
 
         }
 
-        professor.photo = R.drawable.cormen;
+       // professor.photo = R.drawable.cormen;
         System.out.println("Picture Id "+R.drawable.cormen);
         return professor;
 

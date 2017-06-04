@@ -87,7 +87,10 @@ public class DataBaseStart extends AppCompatActivity{
 
 
 
-        boolean check=my_db.insertProfessor("Rakin Haider","BUET","CSE","PERT CHART","2.1","www.rh.com");
+        boolean check=my_db.insertProfessor("Thomas Cormen","Harvard University","CS","Algorithms","3.7"
+                ,"www.cormen.com",R.drawable.cormen);
+        boolean second=my_db.insertProfessor("Md Kaykobad","BUET","CS","Algorithms","3.7"
+                ,"www.kaykobad.com",R.drawable.kykobad);
 
         if(check){
             System.out.println(" inserted successfully");

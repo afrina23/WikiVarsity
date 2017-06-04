@@ -1,5 +1,6 @@
 package com.androidlime.wikivarsity;
 
+import android.content.Intent;
 import android.os.Process;
 import android.support.v7.app.AppCompatActivity;
 import  android.support.v7.app.*;
@@ -7,6 +8,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -16,15 +18,20 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.Collections;
 
 public class MainActivity extends AppCompatActivity {
     Professor professor= getProfessor();
+    String url="jdbc:mysql://192.168.0.104/test";
+    String user="app";
+    String password="";
+    Connection connection;
+    public  static Statement statement;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
+        //connectMySQL();
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.professor);
@@ -32,7 +39,9 @@ public class MainActivity extends AppCompatActivity {
         myToolbar.setLogo(R.drawable.wikititlelogo);
 
         setSupportActionBar(myToolbar);
+
         setContent();
+
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -43,10 +52,39 @@ public class MainActivity extends AppCompatActivity {
         menu.add("log Out");
         return true;
     }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+       if(item.getTitle()=="My Profile"){
+           Intent intent=new Intent(MainActivity.this,StudentActivity.class);
+           startActivity(intent);
+           return true;
+       }
+        return  false;
+    }
     public Professor getProfessor(){
-        Professor professor= new Professor("Thomas Cormen","Harverd Universy","CS","Algorithm","3.9","www.cormen.com");
+        Professor professor= new Professor("Thomas Cormen","Harvard University","CE","Algorithm","3.9","www.cormen.com");
+        /*
+        String query="Select * from Professor";
+        ResultSet resultSet;
+        try {
+            resultSet= statement.executeQuery(query);
+            resultSet.next();
+            professor.Name=resultSet.getString(1);
+            professor.University=resultSet.getString(2);
+            professor.Dept=resultSet.getString(3);
+            professor.ResearchArea=resultSet.getString(4);
+            professor.MinimumCGPA=resultSet.getString(5);
+            professor.Website=resultSet.getString(6);
+            Toast.makeText(MainActivity.this, "Professor Added", Toast.LENGTH_SHORT).show();
+
+        } catch (Exception e) {
+            System.out.println("query is not executed");
+
+        }*/
         //professor.Photo= new ImageView();
         professor.photo = R.drawable.cormen;
+        System.out.println("Picture Id "+R.drawable.cormen);
         return professor;
 
     }
@@ -108,6 +146,16 @@ public class MainActivity extends AppCompatActivity {
         String connection = "Request Sent";
         Toast.makeText(MainActivity.this, connection, Toast.LENGTH_SHORT).show();
 
+    }
+    public  void connectMySQL(){
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            connection=DriverManager.getConnection(url,user,password);
+            statement=connection.createStatement();
+        } catch (Exception e) {
+            System.out.println("error connecting driver");
+
+        }
     }
 
 }

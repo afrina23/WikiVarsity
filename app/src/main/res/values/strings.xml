@@ -2,4 +2,7 @@
     <string name="app_name">WikiVarsity</string>
     <string name="menutitle">action</string>
     <string name="Professor">Professor</string>
+    <string name="MyProfile">My Profile</string>
+    <string name="student">Student</string>
+    <string name="srch">Search</string>
 </resources>

@@ -9,7 +9,7 @@
         android:id="@+id/my_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
+        android:background="@color/white"
         android:elevation="4dp"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
@@ -21,7 +21,7 @@
         android:layout_height="60dp"
         android:id="@+id/ProfessorName"
 
-        android:background="@android:color/holo_green_light"
+        android:background="@color/cyan"
         android:gravity="center"
         android:textColor="#EEEEEE"
         android:layout_alignParentRight="true" />
@@ -79,10 +79,10 @@
             android:layout_height="wrap_content"
             android:text="Request For Connection"
             android:layout_marginLeft="80dp"
+            android:textAllCaps="false"
             android:onClick="requestForConnection"
             />
 
     </LinearLayout>
-
 
 </LinearLayout>

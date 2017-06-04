@@ -12,6 +12,7 @@ public class Professor {
     String ResearchArea;
     String MinimumCGPA;
     String Website;
+    int Id;
     //ImageView Photo;
     int photo;
     boolean isFavorite= false;

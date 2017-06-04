@@ -1,6 +1,7 @@
 package com.androidlime.wikivarsity;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Process;
 import android.support.v7.app.AppCompatActivity;
 import  android.support.v7.app.*;
@@ -23,16 +24,19 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class MainActivity extends AppCompatActivity {
-    Professor professor= getProfessor();
-    String url="jdbc:mysql://192.168.0.104/test";
-    String user="app";
-    String password="";
-    Connection connection;
+    Professor professor;
+    public String prfessorName;
     public  static Statement statement;
+    DatabaseHelper my_db=DataBaseStart.my_db;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         //connectMySQL();
-
+        Bundle nameContainer=getIntent().getExtras();
+        if (nameContainer != null) {
+            prfessorName = nameContainer.getString("name");
+            //The key argument here must match that used in the other activity
+        }
+        professor= getProfessor();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.professor);
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
@@ -63,29 +67,21 @@ public class MainActivity extends AppCompatActivity {
         return  false;
     }
     public Professor getProfessor(){
-        Professor professor= new Professor("Thomas Cormen","Harvard University","CE","Algorithm","3.9","www.cormen.com");
+     /*   professor= new Professor("Thomas Cormen","Harvard University","CE","Algorithm","3.9","www.cormen.com");
         StudentActivity.student= new Student("Mr A","abc@gmail.com","Bangladesh University of Engineering and Technology"
-                ,"CSE","3.2",null,"abd","aodbaudfowuer");
+                ,"CSE","3.2",null,"abd","aodbaudfowuer");*/
+        Cursor all=DataBaseStart.my_db.getProfessorByName(prfessorName);
+        professor= new Professor();
+        while(all.moveToNext()){
+           professor.Name=  all.getString(0);
+           professor.University=all.getString(1);
+            professor.Dept=all.getString(2);
+            professor.ResearchArea=all.getString(3);
+            professor.MinimumCGPA=all.getString(4);
+            professor.Website=all.getString(5);
 
-        /*
-        String query="Select * from Professor";
-        ResultSet resultSet;
-        try {
-            resultSet= statement.executeQuery(query);
-            resultSet.next();
-            professor.Name=resultSet.getString(1);
-            professor.University=resultSet.getString(2);
-            professor.Dept=resultSet.getString(3);
-            professor.ResearchArea=resultSet.getString(4);
-            professor.MinimumCGPA=resultSet.getString(5);
-            professor.Website=resultSet.getString(6);
-            Toast.makeText(MainActivity.this, "Professor Added", Toast.LENGTH_SHORT).show();
+        }
 
-        } catch (Exception e) {
-            System.out.println("query is not executed");
-
-        }*/
-        //professor.Photo= new ImageView();
         professor.photo = R.drawable.cormen;
         System.out.println("Picture Id "+R.drawable.cormen);
         return professor;
@@ -152,15 +148,6 @@ public class MainActivity extends AppCompatActivity {
         Toast.makeText(MainActivity.this, connection, Toast.LENGTH_SHORT).show();
 
     }
-    public  void connectMySQL(){
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
-            connection=DriverManager.getConnection(url,user,password);
-            statement=connection.createStatement();
-        } catch (Exception e) {
-            System.out.println("error connecting driver");
 
-        }
-    }
 
 }

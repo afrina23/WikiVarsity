@@ -5,4 +5,5 @@
     <string name="MyProfile">My Profile</string>
     <string name="student">Student</string>
     <string name="srch">Search</string>
+    <string name="search_hint">Search Professor</string>
 </resources>

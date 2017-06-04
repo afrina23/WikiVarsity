@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.widget.Toast;
 
 /**
  * Created by Afrina on 29-Sep-16.
@@ -75,6 +76,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public Cursor getProfessors(){
         SQLiteDatabase sqLiteDatabase= this.getReadableDatabase();
         Cursor cursor= sqLiteDatabase.rawQuery("SELECT * FROM "+professorTable,null);
+        return  cursor;
+    }
+    public Cursor getProfessorByName(String name){
+        SQLiteDatabase sqLiteDatabase= this.getReadableDatabase();
+        Cursor cursor;
+        try{
+            cursor= sqLiteDatabase.rawQuery("SELECT * FROM "+professorTable+ " WHERE NAME LIKE \""+name+"\""
+                    ,null);
+
+        }catch (Exception e){
+            return null;
+        }
+
         return  cursor;
     }
     /*public boolean updateData(String id,String name,String surname, int Marks){

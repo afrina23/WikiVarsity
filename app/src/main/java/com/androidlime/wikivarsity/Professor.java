@@ -17,7 +17,7 @@ public class Professor {
     int photo;
     boolean isFavorite= false;
     Professor(){
-
+        photo=0;
     }
     Professor(String name,String university, String dept, String researchArea,String minimumCGPA ,String website){
         Name=name;

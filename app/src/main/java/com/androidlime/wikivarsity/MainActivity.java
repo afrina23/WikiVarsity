@@ -64,6 +64,9 @@ public class MainActivity extends AppCompatActivity {
     }
     public Professor getProfessor(){
         Professor professor= new Professor("Thomas Cormen","Harvard University","CE","Algorithm","3.9","www.cormen.com");
+        StudentActivity.student= new Student("Mr A","abc@gmail.com","Bangladesh University of Engineering and Technology"
+                ,"CSE","3.2",null,"abd","aodbaudfowuer");
+
         /*
         String query="Select * from Professor";
         ResultSet resultSet;
@@ -132,11 +135,13 @@ public class MainActivity extends AppCompatActivity {
         if(professor.isFavorite==false){
             professor.isFavorite=true;
             favoriteButton.setBackgroundResource(R.drawable.goldstar);
+            StudentActivity.student.FavouriteProfessor.addProfessor(professor.Name);
             popFavorites = "Added to Favorites";
         }
         else{
             favoriteButton.setBackgroundResource(R.drawable.whitestar);
             popFavorites = "Removed from Favorites";
+            StudentActivity.student.FavouriteProfessor.remove(professor.Name);
             professor.isFavorite=false;
         }
 

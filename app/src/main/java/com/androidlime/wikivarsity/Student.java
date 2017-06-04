@@ -14,7 +14,7 @@ public class Student {
     String CV;
     String About;
     Student(){
-
+           FavouriteProfessor= new Favourite();
     }
     Student(String name,String email,String university,String dept,String cgpa,Favourite favourite,String cv,String about){
         Name=name;

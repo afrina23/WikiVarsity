@@ -11,42 +11,73 @@ import android.database.sqlite.SQLiteOpenHelper;
  */
 public class DatabaseHelper extends SQLiteOpenHelper {
 
-    public static final String DataBaseName="student.db";
-    public static final String StudentTable="student_table";
-    public static final String C_1="ID";
-    public static final String C_2="NAME";
-    public static final String C_3="SURNAME";
-    public static final String C_4="MARKS";
+    public static final String DataBaseName="wiki.db";
+    public static final String professorTable="professor_table";
+    public static final String favouriteTable="favourite_table";
+    public static final String C_1="NAME";
+    public static final String C_2="VARSITY";
+    public static final String C_3="DEPT";
+    public static final String C_4="RESEARCH_AREA";
+    public static final String C_5="MINIMUM_CGPA";
+    public static final String C_6="WEBSITE";
 
     public DatabaseHelper(Context context) {
         super(context, DataBaseName, null, 1);
 
+
 }
+
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-            sqLiteDatabase.execSQL("create table "+StudentTable+"(ID INTEGER PRIMARY KEY AUTOINCREMENT, NAME TEXT ,SURNAME TEXT,MARKS INTEGER);");
+            sqLiteDatabase.execSQL("create table "+professorTable+
+                    "(NAME TEXT PRIMARY KEY , VARSITY TEXT ,DEPT TEXT,RESEARCH_AREA TEXT,MINIMUM_CGPA TEXT,WEBSITE TEXT);");
+            sqLiteDatabase.execSQL("create table "+favouriteTable+"(ID INT ,PROFESSOR_NAME TEXT);");
+        System.out.println("************************table created:"+professorTable+"***************************************");
+
 
     }
 
-    public  boolean insertData(String name,String sur,int mark){
+    public  boolean insertFavourite(String name,int Id){
         SQLiteDatabase sqLiteDatabase= this.getWritableDatabase();
         ContentValues contentValues= new ContentValues();
-        contentValues.put(C_2,name);
-        contentValues.put(C_3,sur);
-        contentValues.put(C_4,mark);
-        long result=sqLiteDatabase.insert(StudentTable,null,contentValues);
+        contentValues.put("PROFESSOR_NAME",name);
+        contentValues.put("ID",Id);
+       // contentValues.put(C_4,mark);
+        long result=sqLiteDatabase.insert(favouriteTable,null,contentValues);
         if(result==-1){
             return  false;
         }
         return true;
     }
-    public Cursor getData(){
+
+    public  boolean insertProfessor(String name,String university, String dept, String researchArea,String minimumCGPA ,String website){
+        SQLiteDatabase sqLiteDatabase= this.getWritableDatabase();
+        ContentValues contentValues= new ContentValues();
+        contentValues.put(C_1,name);
+        contentValues.put(C_2,university);
+        contentValues.put(C_3,dept);
+        contentValues.put(C_4,researchArea);
+        contentValues.put(C_5,minimumCGPA);
+        contentValues.put(C_6,website);
+        // contentValues.put(C_4,mark);
+        long result=sqLiteDatabase.insert(professorTable,null,contentValues);
+        if(result==-1){
+            return  false;
+        }
+        return true;
+    }
+    public Cursor getFavourites(){
         SQLiteDatabase sqLiteDatabase= this.getReadableDatabase();
-        Cursor cursor= sqLiteDatabase.rawQuery("SELECT * FROM "+StudentTable,null);
+        Cursor cursor= sqLiteDatabase.rawQuery("SELECT * FROM "+favouriteTable,null);
         return  cursor;
     }
-    public boolean updateData(String id,String name,String surname, int Marks){
+    public Cursor getProfessors(){
+        SQLiteDatabase sqLiteDatabase= this.getReadableDatabase();
+        Cursor cursor= sqLiteDatabase.rawQuery("SELECT * FROM "+professorTable,null);
+        return  cursor;
+    }
+    /*public boolean updateData(String id,String name,String surname, int Marks){
         SQLiteDatabase sqLiteDatabase= this.getWritableDatabase();
         ContentValues contentValues= new ContentValues();
         contentValues.put(C_1,id);
@@ -55,10 +86,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put(C_4,Marks);
         sqLiteDatabase.update(StudentTable,contentValues,"ID=?",new String[]{id});
         return true;
-    }
-    public Integer DeleteData(String id){
+    }*/
+    public Integer DeleteFavourite(String name){
         SQLiteDatabase sqLiteDatabase= this.getWritableDatabase();
-        return sqLiteDatabase.delete(StudentTable,"ID=?",new String[]{id});
+        return sqLiteDatabase.delete(favouriteTable,"PROFESSOR_NAME=?",new String[]{name});
     }
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {

@@ -167,6 +167,18 @@
             android:id="@+id/studentAbout"
 
             />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:text="Favourites :   "
+
+            />
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:id="@+id/favouriteList"
+            ></ListView>
 
     </LinearLayout>
     <Button

@@ -6,14 +6,18 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import org.w3c.dom.Text;
+
+import java.util.ArrayList;
 
 /**
  * Created by Afrina on 04-Jun-17.
  */
 public class StudentActivity extends AppCompatActivity{
+    static  Student student;
     protected void onCreate(Bundle savedInstanceState) {
         //connectMySQL();
 
@@ -37,7 +41,11 @@ public class StudentActivity extends AppCompatActivity{
         return true;
     }
     public  void setContent(){
-        Student student= new Student("Mr A","abc@gmail.com","Bangladesh University of Engineering and Technology","CSE","3.2",null,"abd","aodbaudfowuer");
+        //student= new Student("Mr A","abc@gmail.com","Bangladesh University of Engineering and Technology"
+          //      ,"CSE","3.2",null,"abd","aodbaudfowuer");
+        Favourite favourite= new Favourite();
+        favourite.addProfessor("Farbin");
+        student.FavouriteProfessor=favourite;
         TextView studentName= (TextView) findViewById(R.id.studentName);
         TextView university= (TextView) findViewById(R.id.StudentVarsity);
         ImageView imageView= (ImageView) findViewById(R.id.studentImage);
@@ -54,6 +62,22 @@ public class StudentActivity extends AppCompatActivity{
         cgpa.setText(student.CGPA);
         cv.setText(student.CV);
         about.setText(student.About);
+
+
+        //list view
+
+        ArrayList<String> list = new ArrayList<String>();
+        for(int i=0;i<student.FavouriteProfessor.getSize();i++){
+                list.add(student.FavouriteProfessor.getProfessorName(i));
+        }
+
+
+        //instantiate custom adapter
+        MyCustomAdapter adapter = new MyCustomAdapter(list, this);
+
+        //handle listview and assign adapter
+        ListView lView = (ListView)findViewById(R.id.favouriteList);
+        lView.setAdapter(adapter);
 
 
 

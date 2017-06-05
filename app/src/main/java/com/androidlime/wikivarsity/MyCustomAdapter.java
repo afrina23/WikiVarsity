@@ -17,12 +17,13 @@ import java.util.ArrayList;
 public class MyCustomAdapter extends BaseAdapter implements ListAdapter {
     private ArrayList<String> list = new ArrayList<String>();
     private Context context;
-
+    DatabaseHelper my_db;
 
 
     public MyCustomAdapter(ArrayList<String> list, Context context) {
         this.list = list;
         this.context = context;
+        my_db=DataBaseStart.my_db;
     }
 
     @Override
@@ -68,6 +69,7 @@ public class MyCustomAdapter extends BaseAdapter implements ListAdapter {
 
                 //do something
                 StudentActivity.student.FavouriteProfessor.remove(list.get(position));
+                my_db.DeleteFavourite(list.get(position));
                 list.remove(position); //or some other task
                 notifyDataSetChanged();
 

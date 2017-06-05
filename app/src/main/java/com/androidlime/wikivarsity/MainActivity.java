@@ -1,11 +1,13 @@
 package com.androidlime.wikivarsity;
 
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.os.Process;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import  android.support.v7.app.*;
 import android.os.Bundle;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -20,23 +22,22 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.Collections;
 
 public class MainActivity extends AppCompatActivity {
     Professor professor;
     public String prfessorName;
     public  static Statement statement;
-    DatabaseHelper my_db=DataBaseStart.my_db;
+    DatabaseHelper my_db;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        //connectMySQL();
+
+        my_db=DataBaseStart.my_db;
         Bundle nameContainer=getIntent().getExtras();
         if (nameContainer != null) {
             prfessorName = nameContainer.getString("name");
             //The key argument here must match that used in the other activity
         }
-        professor= getProfessor();
+        professor= getProfessorData();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.professor);
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
@@ -54,23 +55,59 @@ public class MainActivity extends AppCompatActivity {
         menu.add("My Profile");
         menu.add("Notifications");
         menu.add("log Out");
+        SearchManager searchManager =
+                (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+
+
+        SearchView searchView =
+                (SearchView) menu.findItem(R.id.action_search).getActionView();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                //ShowMessage("Msg",query);
+                getProfessorPage(query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
+        //  searchView.setSearchableInfo(
+        //        searchManager.getSearchableInfo(getComponentName()));
         return true;
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
-       if(item.getTitle()=="My Profile"){
-           Intent intent=new Intent(MainActivity.this,StudentActivity.class);
-           startActivity(intent);
-           return true;
-       }
+        if(item.getTitle()=="My Profile"){
+            Intent intent=new Intent(MainActivity.this,StudentActivity.class);
+            startActivity(intent);
+            return true;
+        }
         return  false;
     }
-    public Professor getProfessor(){
+    public void getProfessorPage(String name){
+        Cursor all=my_db.getProfessorByName(name);
+        ShowMessage("number ", String.valueOf(all.getCount()) );
+        if(all.getCount()==0){
+            Toast.makeText(MainActivity.this,"THERE is no DATA", Toast.LENGTH_LONG).show();
+            ShowMessage("ERROR","No Professor Found of this Name"+name);
+        }
+        else{
+            Intent intent= new Intent(MainActivity.this,MainActivity.class);
+            intent.putExtra("name",name);
+            startActivity(intent);
+        }
+
+    }
+
+    public Professor getProfessorData(){
      /*   professor= new Professor("Thomas Cormen","Harvard University","CE","Algorithm","3.9","www.cormen.com");
         StudentActivity.student= new Student("Mr A","abc@gmail.com","Bangladesh University of Engineering and Technology"
                 ,"CSE","3.2",null,"abd","aodbaudfowuer");*/
-        Cursor all=DataBaseStart.my_db.getProfessorByName(prfessorName);
+        Cursor all=my_db.getProfessorByName(prfessorName);
         professor= new Professor();
         while(all.moveToNext()){
            professor.Name=  all.getString(0);
@@ -84,6 +121,8 @@ public class MainActivity extends AppCompatActivity {
         }
 
        // professor.photo = R.drawable.cormen;
+        professor.isFavorite=checkIfFavourite();
+        ShowMessage("Is Favourite",String.valueOf(professor.isFavorite));
         System.out.println("Picture Id "+R.drawable.cormen);
         return professor;
 
@@ -96,6 +135,13 @@ public class MainActivity extends AppCompatActivity {
         varsity.setText(professor.University);
         ImageView image= (ImageView) findViewById(R.id.professorImage);
         image.setImageResource(professor.photo);
+        Button favoriteButton = (Button)findViewById(R.id.favoriteButton);
+        if(professor.isFavorite){
+            favoriteButton.setBackgroundResource(R.drawable.goldstar);
+        }
+        else {
+            favoriteButton.setBackgroundResource(R.drawable.whitestar);
+        }
         //listview
         String[] professorInfo = new String[4];
         professorInfo[0]="Department : "+professor.Dept;
@@ -126,28 +172,61 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+    public  boolean checkIfFavourite(){
+        Cursor result=my_db.getFavouriteByName(professor.Name);
+        if(result.getCount()==0){
+            return false;
+        }
+        return true;
+    }
     public void addToFavorites(View v){
         String popFavorites;
         Button favoriteButton = (Button)findViewById(R.id.favoriteButton);
         if(professor.isFavorite==false){
             professor.isFavorite=true;
             favoriteButton.setBackgroundResource(R.drawable.goldstar);
-            StudentActivity.student.FavouriteProfessor.addProfessor(professor.Name);
+           // StudentActivity.student.FavouriteProfessor.addProfessor(professor.Name);
+            my_db.insertFavourite(professor.Name,1);
+            ShowAllFavourites();
             popFavorites = "Added to Favorites";
         }
         else{
             favoriteButton.setBackgroundResource(R.drawable.whitestar);
             popFavorites = "Removed from Favorites";
-            StudentActivity.student.FavouriteProfessor.remove(professor.Name);
+            //StudentActivity.student.FavouriteProfessor.remove(professor.Name);
+            my_db.DeleteFavourite(professor.Name);
+            ShowAllFavourites();
             professor.isFavorite=false;
         }
 
         Toast.makeText(MainActivity.this, popFavorites, Toast.LENGTH_SHORT).show();
     }
+    public void ShowAllFavourites(){
+        Cursor all=my_db.getFavourites();
+        if(all.getCount()==0){
+            Toast.makeText(MainActivity.this,"THERE is no Professors", Toast.LENGTH_LONG).show();
+            ShowMessage("ERROR","No Favourite Found");
+        }
+        else{
+            StringBuffer msg= new StringBuffer();
+            while(all.moveToNext()){
+                msg.append("Id :"+all.getString(0)+"\n");
+                msg.append("Name :"+all.getString(1)+"\n");
+                ShowMessage("DATA",msg.toString());
+            }
+        }
+    }
     public void requestForConnection(View v) {
         String connection = "Request Sent";
         Toast.makeText(MainActivity.this, connection, Toast.LENGTH_SHORT).show();
 
+    }
+    public  void ShowMessage(String title, String msg){
+        AlertDialog.Builder builder= new AlertDialog.Builder(this);
+        builder.setCancelable(true);
+        builder.setTitle(title);
+        builder.setMessage(msg);
+        builder.show();
     }
 
 

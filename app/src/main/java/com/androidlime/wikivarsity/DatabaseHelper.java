@@ -75,6 +75,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Cursor cursor= sqLiteDatabase.rawQuery("SELECT * FROM "+favouriteTable,null);
         return  cursor;
     }
+    public Cursor getFavouriteByName(String name){
+        SQLiteDatabase sqLiteDatabase= this.getReadableDatabase();
+        Cursor cursor= sqLiteDatabase.rawQuery("SELECT * FROM "+favouriteTable+ " WHERE PROFESSOR_NAME LIKE \""+name+"\"",null);
+        return  cursor;
+    }
     public Cursor getProfessors(){
         SQLiteDatabase sqLiteDatabase= this.getReadableDatabase();
         Cursor cursor= sqLiteDatabase.rawQuery("SELECT * FROM "+professorTable,null);

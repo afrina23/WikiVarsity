@@ -13,5 +13,22 @@
         android:elevation="4dp"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+    <TextView
+
+        android:textSize="20sp"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:id="@+id/wikichart"
+        android:text="@string/wikichart"
+        android:background="@color/cyan"
+        android:gravity="center"
+        android:textColor="#EEEEEE"
+        android:layout_alignParentRight="true" />
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="500dp"
+        android:id="@+id/varsityList"
+        ></ListView>
 
 </LinearLayout>

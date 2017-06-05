@@ -53,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main,menu);
         menu.add("My Profile");
+        menu.add("Home");
         menu.add("Notifications");
         menu.add("log Out");
         SearchManager searchManager =
@@ -61,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
 
         SearchView searchView =
                 (SearchView) menu.findItem(R.id.action_search).getActionView();
+        searchView.setQueryHint("Search Professor");
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -86,14 +88,19 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
             return true;
         }
+        if(item.getTitle()=="Home"){
+            Intent intent=new Intent(MainActivity.this,DataBaseStart.class);
+            startActivity(intent);
+            return true;
+        }
         return  false;
     }
     public void getProfessorPage(String name){
         Cursor all=my_db.getProfessorByName(name);
-        ShowMessage("number ", String.valueOf(all.getCount()) );
+       // ShowMessage("number ", String.valueOf(all.getCount()) );
         if(all.getCount()==0){
-            Toast.makeText(MainActivity.this,"THERE is no DATA", Toast.LENGTH_LONG).show();
-            ShowMessage("ERROR","No Professor Found of this Name"+name);
+           // Toast.makeText(MainActivity.this,"THERE is no DATA", Toast.LENGTH_LONG).show();
+            ShowMessage("ERROR","No Professor Found of the Name "+name);
         }
         else{
             Intent intent= new Intent(MainActivity.this,MainActivity.class);
@@ -122,7 +129,7 @@ public class MainActivity extends AppCompatActivity {
 
        // professor.photo = R.drawable.cormen;
         professor.isFavorite=checkIfFavourite();
-        ShowMessage("Is Favourite",String.valueOf(professor.isFavorite));
+       // ShowMessage("Is Favourite",String.valueOf(professor.isFavorite));
         System.out.println("Picture Id "+R.drawable.cormen);
         return professor;
 
@@ -187,7 +194,7 @@ public class MainActivity extends AppCompatActivity {
             favoriteButton.setBackgroundResource(R.drawable.goldstar);
            // StudentActivity.student.FavouriteProfessor.addProfessor(professor.Name);
             my_db.insertFavourite(professor.Name,1);
-            ShowAllFavourites();
+         //   ShowAllFavourites();
             popFavorites = "Added to Favorites";
         }
         else{
@@ -195,7 +202,7 @@ public class MainActivity extends AppCompatActivity {
             popFavorites = "Removed from Favorites";
             //StudentActivity.student.FavouriteProfessor.remove(professor.Name);
             my_db.DeleteFavourite(professor.Name);
-            ShowAllFavourites();
+           // ShowAllFavourites();
             professor.isFavorite=false;
         }
 

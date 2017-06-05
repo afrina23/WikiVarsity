@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
@@ -13,6 +14,9 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.Toast;
 
 /**
@@ -21,26 +25,34 @@ import android.widget.Toast;
 public class DataBaseStart extends AppCompatActivity{
     public static DatabaseHelper my_db;
     protected void onCreate(Bundle savedInstanceState) {
-        //connectMySQL();
+
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.front_page);
-     //   Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
-       // myToolbar.setLogo(R.drawable.wikititlelogo);
 
-        //setSupportActionBar(myToolbar);
         my_db= new DatabaseHelper(this);
-
-//        ShowMessage("started","database created"+my_db.getDatabaseName());
+        //toolbar
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         myToolbar.setLogo(R.drawable.wikititlelogo);
-
         setSupportActionBar(myToolbar);
 
+        //listview
+        String[] varsities={"Harvard University (USA)","Ludwig Maximillian University of Munich, Germany",
+        "Massachusetts Institute of Technology(USA)","Stanford University(USA)","University of Oxford(UK)",
+        "University of Cambridge(UK)","Trinity College, Ireland","University of California(USA)",
+                " University of New South Wales, Australia","University of Washington(USA)"};
+        ListAdapter theAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,
+                varsities);
 
-         addProfessor();
-        ShowAllProfessor();
-       // setContent();
+        // ListViews display data in a scrollable list
+        ListView theListView = (ListView) findViewById(R.id.varsityList);
+        theListView.setDivider(null);
+        // Tells the ListView what data to use
+        theListView.setAdapter(theAdapter);
+
+        addProfessor();
+        //ShowAllProfessor();
+
 
     }
     @Override
@@ -56,6 +68,9 @@ public class DataBaseStart extends AppCompatActivity{
 
         SearchView searchView =
                 (SearchView) menu.findItem(R.id.action_search).getActionView();
+        searchView.setQueryHint("Search Professor");
+        searchView.setIconified(false);
+        searchView.clearFocus();
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -109,10 +124,10 @@ public class DataBaseStart extends AppCompatActivity{
     }
     public void getProfessorPage(String name){
         Cursor all=my_db.getProfessorByName(name);
-        ShowMessage("number ", String.valueOf(all.getCount()) );
+        //ShowMessage("number ", String.valueOf(all.getCount()) );
         if(all.getCount()==0){
-            Toast.makeText(DataBaseStart.this,"THERE is no DATA", Toast.LENGTH_LONG).show();
-            ShowMessage("ERROR","No Professor Found of this Name"+name);
+          //  Toast.makeText(DataBaseStart.this,"THERE is no DATA", Toast.LENGTH_LONG).show();
+            ShowMessage("ERROR","No Professor Found of the Name "+name);
         }
         else{
             Intent intent= new Intent(DataBaseStart.this,MainActivity.class);

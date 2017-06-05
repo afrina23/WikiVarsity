@@ -45,6 +45,7 @@ public class StudentActivity extends AppCompatActivity{
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main,menu);
         menu.add("My Profile");
+        menu.add("Home");
         menu.add("Notifications");
         menu.add("log Out");
         SearchManager searchManager =
@@ -53,6 +54,7 @@ public class StudentActivity extends AppCompatActivity{
 
         SearchView searchView =
                 (SearchView) menu.findItem(R.id.action_search).getActionView();
+        searchView.setQueryHint("Search Professor");
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -78,14 +80,19 @@ public class StudentActivity extends AppCompatActivity{
             startActivity(intent);
             return true;
         }
+        if(item.getTitle()=="Home"){
+            Intent intent=new Intent(StudentActivity.this,DataBaseStart.class);
+            startActivity(intent);
+            return true;
+        }
         return  false;
     }
     public void getProfessorPage(String name){
         Cursor all=my_db.getProfessorByName(name);
-        ShowMessage("number ", String.valueOf(all.getCount()) );
+        //ShowMessage("number ", String.valueOf(all.getCount()) );
         if(all.getCount()==0){
-            Toast.makeText(StudentActivity.this,"THERE is no DATA", Toast.LENGTH_LONG).show();
-            ShowMessage("ERROR","No Professor Found of this Name"+name);
+           // Toast.makeText(StudentActivity.this,"THERE is no DATA", Toast.LENGTH_LONG).show();
+            ShowMessage("ERROR","No Professor Found of the Name "+name);
         }
         else{
             Intent intent= new Intent(StudentActivity.this,MainActivity.class);
@@ -143,8 +150,8 @@ public class StudentActivity extends AppCompatActivity{
         Cursor all=my_db.getFavourites();
         Favourite result= new Favourite();
         if(all.getCount()==0){
-            Toast.makeText(StudentActivity.this,"THERE is no Professors", Toast.LENGTH_LONG).show();
-            ShowMessage("ERROR","No Favourite Found");
+           // Toast.makeText(StudentActivity.this,"THERE is no Professors", Toast.LENGTH_LONG).show();
+            //ShowMessage("ERROR","No Favourite Found");
         }
         else{
             StringBuffer msg= new StringBuffer();

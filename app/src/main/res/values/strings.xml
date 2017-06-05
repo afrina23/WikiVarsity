@@ -6,4 +6,5 @@
     <string name="student">Student</string>
     <string name="srch">Search</string>
     <string name="search_hint">Search Professor</string>
+    <string name="wikichart">The Wiki Chart</string>
 </resources>

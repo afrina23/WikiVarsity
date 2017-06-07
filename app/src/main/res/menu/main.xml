@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+    
 
     <item
         android:id="@+id/action_search"
@@ -8,6 +9,36 @@
         android:title=""
         app:actionViewClass="android.support.v7.widget.SearchView"
         app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/menu"
+        android:icon="@drawable/menu"
+        android:title="action_notification"
+        app:showAsAction="always">
+        <menu>
+            <item
+                android:id="@+id/profile"
+                android:icon="@drawable/profile"
+                android:orderInCategory="100"
+                android:title="@string/MyProfile" />
+            <item
+                android:id="@+id/home"
+                android:icon="@drawable/home"
+                android:orderInCategory="100"
+                android:title="Home" />
+            <item
+                android:id="@+id/notification"
+                android:icon="@drawable/notification"
+                android:orderInCategory="100"
+                android:title="Notifications" />
+            <item
+                android:id="@+id/logout"
+                android:icon="@drawable/logout"
+                android:orderInCategory="100"
+                android:title="Log Out" />
+
+        </menu>
+    </item>
+
 
 
 </menu>

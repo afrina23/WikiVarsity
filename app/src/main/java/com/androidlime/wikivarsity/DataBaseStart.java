@@ -59,9 +59,9 @@ public class DataBaseStart extends AppCompatActivity{
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main,menu);
-        menu.add("My Profile");
-        menu.add("Notifications");
-        menu.add("log Out");
+       // menu.add("My Profile");
+       // menu.add("Notifications");
+       // menu.add("log Out");
         SearchManager searchManager =
                 (SearchManager) getSystemService(Context.SEARCH_SERVICE);
 
@@ -91,11 +91,17 @@ public class DataBaseStart extends AppCompatActivity{
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
-        if(item.getTitle()=="My Profile"){
+        if(item.getItemId()==R.id.profile){
             Intent intent=new Intent(DataBaseStart.this,StudentActivity.class);
             startActivity(intent);
             return true;
         }
+        if(item.getItemId()==R.id.home){
+            Intent intent=new Intent(DataBaseStart.this,DataBaseStart.class);
+            startActivity(intent);
+            return true;
+        }
+
         return  false;
     }
     public void addProfessor(){

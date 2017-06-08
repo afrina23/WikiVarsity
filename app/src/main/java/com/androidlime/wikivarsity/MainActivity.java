@@ -123,14 +123,16 @@ public class MainActivity extends AppCompatActivity {
             professor.ResearchArea=all.getString(3);
             professor.MinimumCGPA=all.getString(4);
             professor.Website=all.getString(5);
-            professor.photo=all.getInt(6);
+            //professor.photo=all.getInt(6);
+            professor.image=all.getString(6);
+
 
         }
 
        // professor.photo = R.drawable.cormen;
         professor.isFavorite=checkIfFavourite();
        // ShowMessage("Is Favourite",String.valueOf(professor.isFavorite));
-        System.out.println("Picture Id "+R.drawable.cormen);
+        //System.out.println("Picture Id "+R.drawable.cormen);
         return professor;
 
     }
@@ -141,10 +143,14 @@ public class MainActivity extends AppCompatActivity {
         TextView varsity= (TextView) findViewById(R.id.professorVarsity);
         varsity.setText(professor.University);
         ImageView image= (ImageView) findViewById(R.id.professorImage);
-        image.setImageResource(professor.photo);
+
+        String uri = "@drawable/"+professor.image;
+        int imageResource = getResources().getIdentifier(uri, null, getPackageName());
+        image.setImageResource(imageResource);
+
         Button favoriteButton = (Button)findViewById(R.id.favoriteButton);
         if(professor.isFavorite){
-            favoriteButton.setBackgroundResource(R.drawable.goldstar);
+            favoriteButton.setBackgroundResource(R.drawable.yellowstar);
         }
         else {
             favoriteButton.setBackgroundResource(R.drawable.whitestar);
@@ -191,7 +197,7 @@ public class MainActivity extends AppCompatActivity {
         Button favoriteButton = (Button)findViewById(R.id.favoriteButton);
         if(professor.isFavorite==false){
             professor.isFavorite=true;
-            favoriteButton.setBackgroundResource(R.drawable.goldstar);
+            favoriteButton.setBackgroundResource(R.drawable.yellowstar);
            // StudentActivity.student.FavouriteProfessor.addProfessor(professor.Name);
             my_db.insertFavourite(professor.Name,1);
          //   ShowAllFavourites();

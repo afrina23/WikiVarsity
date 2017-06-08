@@ -14,10 +14,11 @@ public class Professor {
     String Website;
     int Id;
     //ImageView Photo;
-    int photo;
+    //int photo;
+    String image;
     boolean isFavorite= false;
     Professor(){
-        photo=0;
+        //photo=0;
     }
     Professor(String name,String university, String dept, String researchArea,String minimumCGPA ,String website){
         Name=name;

@@ -12,8 +12,8 @@ import android.widget.Toast;
  */
 public class DatabaseHelper extends SQLiteOpenHelper {
 
-    public static final String DataBaseName="WikiVarsity.db";
-    public static final String professorTable="professor_table";
+    public static final String DataBaseName="database.db";
+    public static final String professorTable="ProfessorInfo";
     public static final String favouriteTable="favourite_table";
     public static final String C_1="NAME";
     public static final String C_2="VARSITY";
@@ -32,7 +32,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
             sqLiteDatabase.execSQL("create table "+professorTable+
-                    "(NAME TEXT PRIMARY KEY , VARSITY TEXT ,DEPT TEXT,RESEARCH_AREA TEXT,MINIMUM_CGPA TEXT,WEBSITE TEXT,PHOTO INTEGER);");
+                    "(NAME TEXT PRIMARY KEY , VARSITY TEXT ,DEPT TEXT,RESEARCH_AREA TEXT,MINIMUM_CGPA TEXT,WEBSITE TEXT,PHOTO TEXT);");
             sqLiteDatabase.execSQL("create table "+favouriteTable+"(ID INT ,PROFESSOR_NAME TEXT);");
         System.out.println("************************table created:"+professorTable+"***************************************");
 
@@ -52,8 +52,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return true;
     }
 
-    public  boolean insertProfessor(String name,String university, String dept, String researchArea,
-                                    String minimumCGPA ,String website,long photo){
+    public  boolean insertProfessor(String name, String university, String dept, String researchArea,
+                                    String minimumCGPA , String website, String photo){
         SQLiteDatabase sqLiteDatabase= this.getWritableDatabase();
         ContentValues contentValues= new ContentValues();
         contentValues.put(C_1,name);
@@ -87,9 +87,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
     public Cursor getProfessorByName(String name){
         SQLiteDatabase sqLiteDatabase= this.getReadableDatabase();
-        Cursor cursor;
+       Cursor cursor ;
         try{
-            cursor= sqLiteDatabase.rawQuery("SELECT * FROM "+professorTable+ " WHERE NAME LIKE \""+name+"\""
+            cursor = sqLiteDatabase.rawQuery("SELECT * FROM "+professorTable+ " WHERE NAME LIKE \""+name+"\""
                     ,null);
 
         }catch (Exception e){

@@ -69,7 +69,7 @@ public class DataBaseStart extends AppCompatActivity{
         SearchView searchView =
                 (SearchView) menu.findItem(R.id.action_search).getActionView();
         searchView.setQueryHint("Search Professor");
-        searchView.setIconified(false);
+        searchView.setIconified(true);
         searchView.clearFocus();
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -109,9 +109,9 @@ public class DataBaseStart extends AppCompatActivity{
 
 
         boolean check=my_db.insertProfessor("Thomas Cormen","Harvard University","CS","Algorithms","3.7"
-                ,"www.cormen.com",R.drawable.cormen);
+                ,"www.cormen.com","cormen");
         boolean second=my_db.insertProfessor("Md Kaykobad","BUET","CS","Algorithms","3.7"
-                ,"www.kaykobad.com",R.drawable.kykobad);
+                ,"www.kaykobad.com","kykobad");
 
         if(check){
             System.out.println(" inserted successfully");

@@ -234,6 +234,7 @@ public class MainActivity extends AppCompatActivity {
         Toast.makeText(MainActivity.this, connection, Toast.LENGTH_SHORT).show();
 
     }
+
     public  void ShowMessage(String title, String msg){
         AlertDialog.Builder builder= new AlertDialog.Builder(this);
         builder.setCancelable(true);

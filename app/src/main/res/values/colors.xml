@@ -7,4 +7,7 @@
     <color name="white">#f9fafa</color>
     <color name="pure_white">#ffffff</color>
     <color name="button">#068b8b</color>
+    <color name="black">#000000</color>
+    <color name="searchbutton">#035353</color>
+
 </resources>

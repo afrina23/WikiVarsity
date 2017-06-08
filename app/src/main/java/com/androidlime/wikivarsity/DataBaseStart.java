@@ -113,14 +113,14 @@ public class DataBaseStart extends AppCompatActivity{
         boolean second=my_db.insertProfessor("Md Kaykobad","BUET","CS","Algorithms","3.7"
                 ,"www.kaykobad.com","kykobad");
 
-        if(check){
+        /*if(check){
             System.out.println(" inserted successfully");
             Toast.makeText(DataBaseStart.this,"inserted successfully",Toast.LENGTH_SHORT).show();
         }
         else{
             System.out.println("Not inserted successfully");
             Toast.makeText(DataBaseStart.this,"Not inserted successfully",Toast.LENGTH_SHORT).show();
-        }
+        }*/
 
 
 
@@ -165,5 +165,11 @@ public class DataBaseStart extends AppCompatActivity{
         builder.setTitle(title);
         builder.setMessage(msg);
         builder.show();
+    }
+    public void searchMe(View v){
+        SearchView searchView =
+                (SearchView) findViewById(R.id.action_search);
+        searchView.setQueryHint("Search Professor");
+        searchView.setIconified(false);
     }
 }
